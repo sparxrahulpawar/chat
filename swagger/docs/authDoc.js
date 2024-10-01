@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /api/v1/auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Authentication]
@@ -11,22 +11,22 @@
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               username*:
  *                 type: string
- *                 description: User's username
+ *                 description: Enter username
  *                 example: johndoe
- *               email:
+ *               email*:
  *                 type: string
- *                 description: User's email
+ *                 description: Enter valid email
  *                 example: johndoe@example.com
- *               password:
+ *               password*:
  *                 type: string
- *                 description: User's password
+ *                 description: Enter your password
  *                 example: mySecret123
  *               profilePic:
  *                 type: string
  *                 format: binary
- *                 description: Profile picture
+ *                 description: Profile picture (Optional)
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -68,7 +68,9 @@
  *                   example: error
  *                 message:
  *                   type: string
- *                   example: Email already in use
+ *                   example:
+ *                      - Email already in use
+ *                      - Fill all the required fields
  *       500:
  *         description: Internal server error
  *         content:
