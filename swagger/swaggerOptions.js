@@ -1,5 +1,11 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import { envVariables } from "../config/config.js";
+import { fileURLToPath } from "url";
+import path from "path";
+
+// Get the filename and directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const { BACKENDURL } = envVariables;
 
@@ -20,7 +26,7 @@ const swaggerDefinition = {
 // Options for swagger-jsdoc
 const options = {
   swaggerDefinition,
-  apis: ["../routes/*.js"], // Path to the API docs
+  apis: [path.resolve(__dirname, "./docs/*.js")],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

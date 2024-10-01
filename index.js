@@ -5,8 +5,8 @@ import sequelize from "./connections/db.js";
 import setupSwagger from "./swagger/api-docs.js";
 import helmet from "helmet";
 import { landing, unKnownRoute } from "./utility/template.js";
-import AppError from "./utility/AppError.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import router from "./routes/index.js";
 
 const app = express();
 const { PORT } = envVariables;
@@ -25,12 +25,12 @@ app.get("/", (req, res) => {
 });
 
 // Handle non-existing routes
-// app.all("*", (req, res, next) => {
-//   next(new AppError(`Cannot find ${req.originalUrl} on this server!`, 404));
-// });
 app.all("*", (req, res) => {
   res.send(unKnownRoute);
 });
+
+// Auth Route
+app.use("/api", router);
 
 // Global error handler
 app.use(errorHandler);
