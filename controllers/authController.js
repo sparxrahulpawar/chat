@@ -3,6 +3,9 @@ import AppError from "../utility/AppError.js";
 import bcrypt from "bcryptjs";
 import { generateJWTToken } from "../utility/generateJWT.js";
 import { envVariables } from "../config/config.js";
+import { generateOTP } from "../utility/generateAll.js";
+import { sendEmail } from "../services/emailService.js";
+import { otpTemplate } from "../utility/template.js";
 
 // POST || Save new user into the users table
 export const register = async (req, res, next) => {
@@ -90,5 +93,45 @@ export const login = async (req, res, next) => {
     });
   } catch (error) {
     next(new AppError(error.message || "Login failed", 500));
+  }
+};
+
+// POST || Forgot user password via otp
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return next(new AppError("Fill all the required fields.", 400));
+    }
+    let trimmedEmail = email.trim().toLowerCase();
+    // Check if user exists
+    const user = await User.findOne({ where: { email: trimmedEmail } });
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+    // Generate 6 digit OTP
+    const otp = generateOTP();
+
+    // Save OTP in user document
+    user.otp = otp;
+    user.otpExpires = Date.now() + 15 * 60 * 1000; // otp expires in 15 min.
+
+    await user.save();
+
+    let html = otpTemplate(user.username, otp, 15);
+
+    // Send OTP via email
+    await sendEmail(email, "Password Reset OTP", `Your OTP is: ${otp}`, html);
+
+    // Respond to the client
+    res.status(200).json({
+      status: "success",
+      message: "OTP sent successfully",
+      data: {
+        otp: otp,
+      },
+    });
+  } catch (error) {
+    next(new AppError(error.message || "Failed to send OTP", 500));
   }
 };

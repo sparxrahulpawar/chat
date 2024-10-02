@@ -26,6 +26,14 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  otp: {
+    type: DataTypes.STRING, // Store the OTP as a string
+    allowNull: true,
+  },
+  otpExpires: {
+    type: DataTypes.DATE, // Store the expiration time of the OTP
+    allowNull: true,
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,

@@ -93,3 +93,58 @@ export const unKnownRoute = `
 </body>
 </html>
   `;
+
+export const otpTemplate = (username, otp, expiresIn) => `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        .otp-code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .expiry {
+            color: #FF5733;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hii ${username},</h2>
+        <p>Your OTP code is <span class="otp-code">${otp}</span>.</p>
+        <p class="expiry">This code will expire in ${expiresIn} minutes.</p>
+        <p>Thank you for using our service!</p>
+        <div class="footer">
+            <p>If you did not request this code, please ignore this email.</p>
+        </div>
+    </div>
+</body>
+</html>
+`;
