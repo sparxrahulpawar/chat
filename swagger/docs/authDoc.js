@@ -186,7 +186,7 @@
 // Forgot Password user
 
 /**
-* @swagger
+ * @swagger
  * /api/auth/forgot-password:
  *   post:
  *     summary: Forgot Password
@@ -261,4 +261,75 @@
  *                 message:
  *                   type: string
  *                   example: Failed to send OTP
+ */
+
+// Reset Password
+
+/**
+ * @swagger
+ * /api/auth/reset-password:
+ *   post:
+ *     summary: Reset Your Password using OTP
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Enter your email*
+ *                 example: johndoe@example.com
+ *               otp:
+ *                 type: string
+ *                 description: Enter valid otp*
+ *                 example: 12345
+ *               newPassword:
+ *                 type: string
+ *                 description: Enter your new password*
+ *                 example: mySecret123
+ *     responses:
+ *       200:
+ *         description: Password has been reset successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Password has been reset successfully
+ *       400:
+ *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example:
+ *                      - Fill all the required fields
+ *                      - Invalid or expired OTP
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: error
+ *                 message:
+ *                   type: string
+ *                   example: Failed to reset password
  */

@@ -135,3 +135,38 @@ export const forgotPassword = async (req, res, next) => {
     next(new AppError(error.message || "Failed to send OTP", 500));
   }
 };
+
+// POST || Reset password uing valid otp
+export const resetPassword = async (req, res, next) => {
+  try {
+    
+    const { email, otp, newPassword } = req.body;
+  
+    if (!email || !otp || !newPassword) {
+      return next(new AppError("Fill all the required fields.", 400));
+    }
+    let trimmedEmail = email.trim().toLowerCase();
+  
+    // Validate the OTP
+    const user = await User.findOne({
+      where: { email: trimmedEmail, otp: otp },
+    });
+  
+    if (!user || user.otpExpires < Date.now()) {
+      return next(new AppError("Invalid or expired OTP", 400));
+    }
+  
+    // Update user's password
+    user.password = await bcrypt.hash(newPassword, 12); // Hash the new password
+    user.otp = null; // Clear the OTP
+    user.otpExpires = null; // Clear the expiration
+    await user.save();
+  
+    res.status(200).json({
+      status: "success",
+      message: "Password has been reset successfully",
+    });
+  } catch (error) {
+    next(new AppError(error.message || "Failed to reset password", 500));
+  }
+};

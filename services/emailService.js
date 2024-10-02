@@ -4,6 +4,8 @@ import { envVariables } from "../config/config.js";
 const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS, EMAIL_FROM,EMAIL_SERVICE } =
   envVariables.email;
 
+  // This transporter is use by the original smtp server credentials
+
 // Create a transporter object using the default SMTP transport
 // const transport = nodemailer.createTransport({
 //   host: EMAIL_HOST,
@@ -14,6 +16,8 @@ const { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS, EMAIL_FROM,EMAIL_SERVICE
 //     pass: EMAIL_PASS,
 //   },
 // });
+
+// This transporter is use for testing
 const transport = nodemailer.createTransport({
   from: EMAIL_FROM,
   service: EMAIL_SERVICE,
