@@ -7,9 +7,14 @@ import helmet from "helmet";
 import { landing, unKnownRoute } from "./utility/template.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import router from "./routes/index.js";
+import { createServer } from "http";
+import { initSocket } from "./socket/socket.js";
 
 const app = express();
 const { PORT } = envVariables;
+
+// Create an HTTP server
+const server = createServer(app);
 
 // Middleware
 app.use(cors());
@@ -35,11 +40,14 @@ app.all("*", (req, res) => {
 // Global error handler
 app.use(errorHandler);
 
+// Initialize socket.io
+initSocket(server); // Pass the server to socket.io setup
+
 // Start the server and sync the database
 const startServer = async () => {
   try {
     await sequelize.sync(); // Sync the database models
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });
   } catch (error) {
