@@ -11,17 +11,17 @@
  *           schema:
  *             type: object
  *             properties:
- *               username*:
+ *               username:
  *                 type: string
- *                 description: Enter username
+ *                 description: Enter username*
  *                 example: johndoe
- *               email*:
+ *               email:
  *                 type: string
- *                 description: Enter valid email
+ *                 description: Enter valid email*
  *                 example: johndoe@example.com
- *               password*:
+ *               password:
  *                 type: string
- *                 description: Enter your password
+ *                 description: Enter your password*
  *                 example: mySecret123
  *               profilePic:
  *                 type: string

@@ -24,13 +24,13 @@ app.get("/", (req, res) => {
   res.send(landing);
 });
 
+// Auth Route
+app.use("/api", router);
+
 // Handle non-existing routes
 app.all("*", (req, res) => {
   res.send(unKnownRoute);
 });
-
-// Auth Route
-app.use("/api", router);
 
 // Global error handler
 app.use(errorHandler);

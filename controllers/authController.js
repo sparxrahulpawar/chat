@@ -7,8 +7,9 @@ export const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
-    if (!username || !email || !password)
+    if (!username || !email || !password) {
       return next(new AppError("Fill all the required fields.", 400));
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
