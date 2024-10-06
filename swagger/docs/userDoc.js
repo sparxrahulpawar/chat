@@ -2,13 +2,13 @@
  * @swagger
  * /api/user:
  *   get:
- *     summary: Get all users
+ *     summary: Get all users except the logged-in user
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []  # Add security for authenticated users
  *     responses:
  *       200:
- *         description: Users retrieved successfully
+ *         description: Users retrieved successfully, excluding the logged-in user
  *         content:
  *           application/json:
  *             schema:
