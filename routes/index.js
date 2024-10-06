@@ -1,6 +1,7 @@
 import express from "express";
 import authRoutes from "./authRoute.js";
 import messageRoutes from "./messageRoutes.js";
+import userRoutes from "./userRoute.js";
 import { authorizeUser } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -8,5 +9,6 @@ const router = express.Router();
 // Mount routes
 router.use("/auth", authRoutes);
 router.use("/message", authorizeUser, messageRoutes);
+router.use("/user", authorizeUser, userRoutes);
 
 export default router;

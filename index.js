@@ -9,6 +9,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import router from "./routes/index.js";
 import { createServer } from "http";
 import { initSocket } from "./socket/socket.js";
+import "./models/associations.js"
 
 const app = express();
 const { PORT } = envVariables;

@@ -20,9 +20,15 @@
  *         senderId:
  *           type: integer
  *           example: 1
+ *         senderName:
+ *           type: string
+ *           example: "Alice"
  *         receiverId:
  *           type: integer
  *           example: 2
+ *         receiverName:
+ *           type: string
+ *           example: "Bob"
  *         text:
  *           type: string
  *           example: "Hello, how are you?"
@@ -162,7 +168,30 @@
  *                     messages:
  *                       type: array
  *                       items:
- *                         $ref: '#/components/schemas/Message'
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: integer
+ *                             example: 1
+ *                           text:
+ *                             type: string
+ *                             example: "Hello!"
+ *                           senderId:
+ *                             type: integer
+ *                             example: 1
+ *                           senderName:
+ *                             type: string
+ *                             example: "Alice"
+ *                           receiverId:
+ *                             type: integer
+ *                             example: 2
+ *                           receiverName:
+ *                             type: string
+ *                             example: "Bob"
+ *                           createdAt:
+ *                             type: string
+ *                             format: date-time
+ *                             example: "2023-10-05T10:00:00Z"
  *       400:
  *         description: Invalid input
  *         content:
