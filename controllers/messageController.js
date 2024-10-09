@@ -30,6 +30,7 @@ export const createMessage = async (req, res) => {
 // Get messages for a user
 export const getMessages = async (req, res, next) => {
   const { userId } = req.params;
+  const data = req.user;
 
   try {
     if (!userId) {
@@ -38,7 +39,10 @@ export const getMessages = async (req, res, next) => {
 
     const messages = await Message.findAll({
       where: {
-        [Op.or]: [{ senderId: userId }, { receiverId: userId }],
+        [Op.or]: [
+          { senderId: userId, receiverId: data.id },
+          { senderId: data.id, receiverId: userId },
+        ],
       },
       include: [
         {
