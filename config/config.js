@@ -5,6 +5,7 @@ dotenv.config();
 export const envVariables = {
   PORT: process.env.PORT || 5010,
   BACKENDURL: process.env.BACKENDURL,
+  FRONTENDURL: process.env.FRONTENDURL,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
   JWT_EXPIRE_TIME: process.env.JWT_EXPIRE_TIME || "30d",
   database: {

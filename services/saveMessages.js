@@ -4,12 +4,17 @@ import Message from "../models/Message.js";
 export const saveMessages = async (data) => {
   const { senderId, receiverId, text } = data;
 
-  // Create and save the new message
-  const newMessage = await Message.create({
-    senderId,
-    receiverId,
-    text,
-  });
+  try {
+    // Create and save the new message
+    const newMessage = await Message.create({
+      senderId,
+      receiverId,
+      text,
+    });
 
-  return newMessage; // Return the saved message
+    return newMessage; // Return the saved message
+  } catch (error) {
+    console.error("Error saving message:", error.message);
+    throw new Error("Failed to save message");
+  }
 };

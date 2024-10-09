@@ -1,13 +1,16 @@
 import { Server } from "socket.io";
-import { handleMessageEvent, handleDisconnection } from "./events.js";
+import { envVariables } from "../config/config.js";
+import { handleDisconnection, handleMessageEvent, handleUserRegistration } from "./events.js";
 
 export const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "*",
+      origin: envVariables.FRONTENDURL,
       methods: ["GET", "POST"],
     },
   });
+
+  const userSockets = {};
 
   // Global error handling for the Socket.IO server
   io.on("error", (err) => {
@@ -15,19 +18,15 @@ export const initSocket = (server) => {
   });
 
   io.on("connection", (socket) => {
-    try {
-      console.log(`New client connected: ${socket.id}`);
+    console.log(`New client connected: ${socket.id}`);
 
-      // Attach event handlers
-      handleMessageEvent(socket, io);
-      handleDisconnection(socket);
+    // Register event handlers
+    handleUserRegistration(socket, userSockets);
+    handleMessageEvent(socket, io, userSockets);
+    handleDisconnection(socket, userSockets);
 
-      // Error handling specific to a single socket connection
-      socket.on("error", (err) => {
-        console.error(`Socket error from client ${socket.id}:`, err);
-      });
-    } catch (err) {
-      console.error("Error during socket connection handling:", err);
-    }
+    socket.on("error", (err) => {
+      console.error(`Socket error from client ${socket.id}:`, err);
+    });
   });
 };
