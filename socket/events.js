@@ -1,9 +1,12 @@
 import { saveMessages } from "../services/saveMessages.js";
 
-export const handleUserRegistration = (socket, userSockets) => {
+export const handleUserRegistration = (socket, userSockets, userStatus, io) => {
   socket.on("register_user", (userId) => {
     userSockets[userId] = socket.id;
+    userStatus[userId] = { status: "online", lastOnline: null };
     console.log(`User ${userId} registered with socket ID: ${socket.id}`);
+    // Notify all users about the updated status
+    io.emit("user_status", { userId, status: "online", lastOnline: null });
   });
 };
 
@@ -30,17 +33,31 @@ export const handleMessageEvent = (socket, io, userSockets) => {
   });
 };
 
-export const handleDisconnection = (socket, userSockets) => {
+export const handleDisconnection = (socket, userSockets, userStatus, io) => {
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
 
-    // Optionally remove the disconnected user from userSockets
+    // Find the user associated with the disconnected socket
     for (let userId in userSockets) {
       if (userSockets[userId] === socket.id) {
+        // Remove user from userSockets
         delete userSockets[userId];
-        console.log(`User ${userId} disconnected`);
+
+        // Set user as offline and record lastOnline timestamp
+        userStatus[userId] = { status: "offline", lastOnline: new Date().toISOString() };
+
+        console.log(`User ${userId} disconnected and is now offline`);
+
+        // Notify all users about the updated status
+        io.emit("user_status", {
+          userId,
+          status: "offline",
+          lastOnline: userStatus[userId].lastOnline,
+        });
+        
         break;
       }
     }
   });
 };
+
